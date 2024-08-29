@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Juego de Clicks</title>
+        <style type="text/css">
+            #progress{
+                height: 20px;
+                background-color: green;
+                color: white;
+                text-align: right;
+            }
+            #win{
+                height: 20px;
+                width: 30px;
+                border-right: 1px black solid;
+                padding-right: 2px;
+                color: black;
+                text-align: right;
+            }
+
+        </style>
+        <script src="/socket.io/socket.io.js"></script>
+        
+        <script type="text/javascript">
+            window.onload = function() {
+                var welcome = document.getElementById("welcome");
+                var allUsers = document.getElementById("users");
+                var progress = document.getElementById("progress");
+                var results = document.getElementById("results");
+
+                var socket = io();
+                socket.on('welcome', function (data) {
+                    console.log(data);
+                    welcome.innerHTML = "Bienvenido al juego <strong>" + data.name + "</strong>";
+                });
+                socket.on('users', function (data) {
+                    allUsers.innerHTML = "<strong>Usuarios:</strong>" + data.users;
+                });
+                
+                progress.onclick = function() {
+                    socket.emit("click");
+                }
+                
+                
+            }
+        </script>
+    </head>
+    <body class="main">
+        <div id="welcome"></div>
+        <hr />
+        <div id="progress"></div>
+        <div id="win">30</div>
+        <hr />
+        <div id="users"></div>
+        <hr />
+        <div id="results"></div>
+    </body>
+</html>
